@@ -13,3 +13,5 @@ data set.
 8. How to get the number of missing values ‘NA’ available in the variables from the data set.
 9. How to work with the ‘Numeric’ data type variable to know their ‘Min’, ‘Max’, ‘mean’ values.
 10. How to plot the box plot & understand how to read it.
+
+![image](https://github.com/Sid-TheAnalyst/Analysis-Of-StarWars-Characters-Dataset-Using-R-/blob/main/Starwars_Data_Analysis/StarWars.jpg)
