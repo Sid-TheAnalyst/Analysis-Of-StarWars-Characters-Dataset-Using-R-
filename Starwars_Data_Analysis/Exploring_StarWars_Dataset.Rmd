@@ -1,0 +1,154 @@
+---
+title: "Analysis Of StarWars Characters Dataset Using R Programming: Part1 - Exploratory Data Analysis"
+author: "Siddharth Prajapati"
+date: "2023-06-10"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+![](/Users\Admin\OneDrive\Documents\images\StarWars.jpg)
+ 
+ 
+ 
+# __Setting up my environment__
+
+```{r setting environment}
+
+#Load the 'tidyverse' package & 'star wars' data set
+
+library(tidyverse)
+data("starwars")
+```
+ 
+ 
+ 
+### __A Quick note on Conflicts:__
+
+Conflicts aren't necessarily a bad thing! Because R is an open source language and anyone can create a package, it's common for different packages to use the same name for similar functions. In our conflicts we see that the _filter()_ function from the _dplyr_ package masks the _filter()_ function from the _stats_ package. We know this because the package name comes before the double colon and the function name comes after, like this:*package::function()*
+
+
+# __Understanding the Dataset:__
+
+Here's where I like to get a handle on what I'm working with. I'll use various functions to make sure my data imported correctly, and start to get an understanding of the data structure and data types
+
+```{r}
+#To check how many rows and columns available in the data frame
+dim(starwars)
+```
+```{r}
+#To get the glimps about the data frame like variable names & their datatypes
+#Also look at the first few rows of each variable.
+glimpse(starwars)
+```
+### __Quick note on the 'List' data type:__
+Lists are the R objects which contain elements of different types like - numbers, strings, vectors etc. In our dataset, there are three variables which have a data type 'list'. The _films_ variable contains the list of star war movies in which the character was appeared, similarly the _vehicles_ variable tells us that, what all vehicles was used by the character.
+
+\newpage
+```{r}
+#To see the first few rows of data set in  nicely-formatted table.
+head(starwars)
+```
+```{r}
+#To view the complete data set
+view(starwars)
+```
+
+![snapshot of the sample dataset](/Users\Admin\OneDrive\Documents\images\Starwars_data_view.png)
+
+
+### __a note on the names():__  
+I have a really hard time remembering what the names of my variables are, and because R is case-sensitive, how the names are formatted. We could fix this by converting all of our variable names to the same case, but for now just know that if you ever need a refresher on the names of the variables in your dataset (and how they're formatted!) you can run names(), like this:
+
+```{r}
+names(starwars)
+```
+\newpage
+```{r}
+#To know the unique values from particular variable
+unique(starwars$hair_color)
+```
+```{r}
+#To know how many observations are there against the unique values in the variable(categorical)
+#also sort it in descending order
+#and view in the neat table format like Pivot Table from Excel
+
+View(sort(table(starwars$hair_color), decreasing = TRUE))
+```
+
+![Count Of values for variable 'hair_color'](/Users\Admin\OneDrive\Documents\images\Starwars_Unique_Observations_Table.png)
+\newpage
+```{r}
+#To get a frequency bar plot for the the particular variable(categorical)
+barplot(sort(table(starwars$hair_color), decreasing = TRUE))
+
+```
+
+\newpage
+```{r}
+#Using pipes to get the same result
+
+starwars %>% 
+  select(hair_color) %>% 
+  count(hair_color) %>% 
+  arrange(desc(n)) %>% 
+  view()
+```
+
+![Frequency of variable values using 'Pipe'](/Users\Admin\OneDrive\Documents\images\Pipes_To_Get_Frequency_Of_Variable.png)
+
+
+\newpage
+## __The NAs!:__   
+*NA* stands for "Not Available", meaning data that is missing.If we don't handle our NA values we're going to be in for a bad time
+
+
+```{r}
+#To know the number of missing values in the variable
+starwars %>% 
+  select(hair_color) %>% 
+  is.na() %>% 
+  sum()
+  
+```
+```{r}
+#To know the number of missing values from all the variables
+sapply(starwars,function(x) sum(is.na(x)))
+```
+```{r}
+#exclude NA values while calculations
+#na.rm is like asking the question, "Should we remove NAs from our code?"
+
+starwars %>% 
+  summarise(avg_height = mean(height,na.rm = TRUE))
+```
+
+
+\newpage
+## __Working with the Numeric Variables__
+
+```{r}
+#To Know the Minimum, Maximum, Mean etc. values
+#For Numeric type variable
+summary(starwars %>% 
+          select(height))
+```
+```{r}
+#To get the box plot
+boxplot(starwars %>% 
+           select(height))
+```
+
+\newpage
+## __Skills Practice/Learn From This Analysis:__   
+
+1. How to load the packages and data sets in R.  
+2. Now I know that 'conflicts' error is not an bad thing.  
+3. How to get a sense of the data using functions like 'dim', 'glimps','head'.  
+4. Understand the 'list' data types & it is different from the other data types.   
+5. How to use the 'names' function to know what the names of variables available in the data set.   
+6. How to use 'unique' function to know the unique values available in the categorical variable.   
+7. How to use the pipes operator along with the functions like 'select','count','arrange' to drill down the data set.   
+8. How to get the number of missing values 'NA' available in the variables from the data set.   
+9. How to work with the 'Numeric' data type variable to know their 'Min', 'Max', 'mean' values.   
+10. How to plot the box plot & understand how to read it.   
